@@ -1,18 +1,10 @@
-package main
+// nqueens provides a data structure, Solution, and a function, Solve, for finding the set of valid solutions to the N Queens problem. Please refer to https://en.m.wikipedia.org/wiki/Eight_queens_puzzle.
+package nqueens
 
-import "fmt"
-
-func main() {
-	sols := NQueens(4)
-	fmt.Println("Solutions:", len(sols))
-	for _, p := range sols {
-		fmt.Println(p)
-	}
-}
-
-// Solution stores the set of column offsets.
+// Solution represents the position of the queens on a square board. Each index represents the row offset and the value represents the column offset.
 type Solution []int
 
+// String returns a string formated as a grid with the location of each queen marked by "Q".
 func (s Solution) String() string {
 	var div, str string
 
@@ -41,62 +33,59 @@ func (s Solution) String() string {
 	return str
 }
 
-// NQueens takes the number of queens to solve for and returns the set of solutions.
-func NQueens(n uint) []Solution {
-	// list options (0...n)
+// Solve returns only the valid solutions for placing n queens on an n x n board, such that no queen can travel to the location of any other queen in a single move, given stardard chess movement rules.
+// Each permutation is calculated recursively. At each stage, the solution is recursively validated and invalid solutions are immediately thrown out.
+func Solve(n uint) []Solution {
 	opts := make([]int, n, n)
 	for i := range opts {
 		opts[i] = i
 	}
 
-	// find and return possible solutions
 	return solve(make(Solution, 0, n), opts)
 }
 
+// solve recursively calculates each permutation and validates it before adding to the set of solutions
 func solve(root Solution, opts []int) (solutions []Solution) {
-	// no more options to choose from, return the root solution
+	// no more options to choose from
 	if len(opts) == 0 {
 		solutions = append(solutions, root)
 	}
 
-	// for each opt, validate the solution and then
 	for i, opt := range opts {
 		// if adding opt would result in an invalid solution, continue to the next opt
-		if !validate(root, len(root), opt) {
+		if !validate(opt, len(root), root) {
 			continue
 		}
 
 		// copy the root solution
-		solution := make(Solution, len(root)+1, cap(root))
+		s := make(Solution, len(root)+1, cap(root))
 		copy(solution, root[:len(root)])
 
-		// add opt to the solution
-		solution[len(root)] = opt
+		s[len(root)] = opt
 
 		// remove opt from the options used to solve the next position
 		o := append(make([]int, 0, cap(opts)-1), opts[:i]...)
 		o = append(o, opts[i+1:]...)
 
 		// append the results of solving the next positioin to the solution set
-		solutions = append(solutions, solve(solution, o)...)
+		solutions = append(solutions, solve(s, o)...)
 	}
 
-	// return the solution set
 	return
 }
 
-// validate recursively checks if adding opt into row i is valid within solution Solution.
-func validate(solution Solution, i, opt int) bool {
-	if len(solution) < 1 {
+// validate recursively checks if slope between the points (x, y) and (s[len(s)-1], len(s)-1) is +/-1. If the slope is +/-1, then false is returned. Otherwise, the length of s is shortened by 1 until len(s) is 0.
+func validate(x, y int, s Solution) bool {
+	if len(s) == 0 {
 		return true
 	}
 
-	j := len(solution) - 1
+	i := len(s) - 1
 
-	switch (i - j) / (opt - solution[j]) {
+	switch (y - i) / (x - s[i]) {
 	case -1, 1:
 		return false
 	default:
-		return validate(solution[:j], i, opt)
+		return validate(x, y, s[:i])
 	}
 }
