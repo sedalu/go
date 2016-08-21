@@ -6,6 +6,9 @@ type Solution []int
 
 // String returns a string formated as a grid with the location of each queen marked by "Q".
 func (s Solution) String() string {
+	if len(s) == 0 {
+		return "++\n++\n"
+	}
 	var div, str string
 
 	for i := 0; i < len(s); i++ {
@@ -48,7 +51,11 @@ func Solve(n uint) []Solution {
 func solve(root Solution, opts []int) (solutions []Solution) {
 	// no more options to choose from
 	if len(opts) == 0 {
-		solutions = append(solutions, root)
+		if len(root) == 0 {
+			return
+		}
+
+		return append(solutions, root)
 	}
 
 	for i, opt := range opts {
@@ -82,10 +89,36 @@ func validate(x, y int, s Solution) bool {
 
 	i := len(s) - 1
 
-	switch (y - i) / (x - s[i]) {
-	case -1, 1:
+	// check for horizontal or verticle placements
+	if s[i] == x || i == y {
 		return false
+	}
+
+	if isDiagonal(s[i], i, x, y) {
+		return false
+	}
+
+	return validate(x, y, s[:i])
+}
+
+func isDiagonal(x1, y1, x2, y2 int) bool {
+	dx, dy := x2-x1, y2-y1
+
+	// infinite slopes
+	if dx == 0 {
+		return false
+	}
+
+	// slopes < 1
+	if dy%dx != 0 {
+		return false
+	}
+
+	// slopes >= 1
+	switch dy / dx {
+	case -1, 1:
+		return true
 	default:
-		return validate(x, y, s[:i])
+		return false
 	}
 }
