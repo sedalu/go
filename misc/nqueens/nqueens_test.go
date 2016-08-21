@@ -5,19 +5,20 @@ import (
 	"testing"
 )
 
-var tSolutionString = []struct {
-	s   Solution
+var tsprint = []struct {
+	s   []int
 	str string
 }{
 	{nil, "++\n++\n"},
-	{make(Solution, 0), "++\n++\n"},
-	{Solution{0}, "+---+\n| Q |\n+---+\n"},
-	{Solution{0, 1}, "+---+---+\n| Q |   |\n+---+---+\n|   | Q |\n+---+---+\n"},
+	{make([]int, 0), "++\n++\n"},
+	{[]int{}, "++\n++\n"},
+	{[]int{0}, "+---+\n| Q |\n+---+\n"},
+	{[]int{0, 1}, "+---+---+\n| Q |   |\n+---+---+\n|   | Q |\n+---+---+\n"},
 }
 
-func TestSolutionString(t *testing.T) {
-	for _, tt := range tSolutionString {
-		str := tt.s.Format()
+func TestSprint(t *testing.T) {
+	for _, tt := range tsprint {
+		str := Sprint(tt.s)
 
 		if str != tt.str {
 			t.Errorf("Solution(%v).String() => %q, want %q", []int(tt.s), str, tt.str)

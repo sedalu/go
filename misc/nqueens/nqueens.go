@@ -1,14 +1,12 @@
 // Package nqueens provides a data structure, Solution, and a function, Solve, for finding the set of valid solutions to the N Queens problem. Please refer to https://en.m.wikipedia.org/wiki/Eight_queens_puzzle.
 package nqueens
 
-// Solution represents the position of the queens on a square board. Each index represents the row offset and the value represents the column offset.
-type Solution []int
-
-// String returns a string formated as a grid with the location of each queen marked by "Q".
-func (s Solution) Format() string {
+// Format returns a string formated as a grid with the location of each queen marked by "Q".
+func Sprint(s []int) string {
 	if len(s) == 0 {
 		return "++\n++\n"
 	}
+
 	var div, str string
 
 	for i := 0; i < len(s); i++ {
