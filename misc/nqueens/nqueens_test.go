@@ -29,15 +29,15 @@ var tSolve = []struct {
 	n   uint
 	len int
 	cmp bool // true => compare solition set; false => compare len()
-	s   []Solution
+	s   [][]int
 }{
 	{0, 0, true, nil},
-	{1, 1, true, []Solution{{0}}},
+	{1, 1, true, [][]int{{0}}},
 	{2, 0, true, nil},
 	{3, 0, true, nil},
-	{4, 2, true, []Solution{{1, 3, 0, 2}, {2, 0, 3, 1}}},
+	{4, 2, true, [][]int{{1, 3, 0, 2}, {2, 0, 3, 1}}},
 	{5, 10, false, nil},
-	{6, 4, true, []Solution{{1, 3, 5, 0, 2, 4}, {2, 5, 1, 4, 0, 3}, {3, 0, 4, 1, 5, 2}, {4, 2, 0, 5, 3, 1}}},
+	{6, 4, true, [][]int{{1, 3, 5, 0, 2, 4}, {2, 5, 1, 4, 0, 3}, {3, 0, 4, 1, 5, 2}, {4, 2, 0, 5, 3, 1}}},
 	{7, 40, false, nil},
 	{8, 92, false, nil},
 }

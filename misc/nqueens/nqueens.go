@@ -38,17 +38,17 @@ func (s Solution) Format() string {
 
 // Solve returns only the valid solutions for placing n queens on an n x n board, such that no queen can travel to the location of any other queen in a single move, given stardard chess movement rules.
 // Each permutation is calculated recursively. At each stage, the solution is recursively validated and invalid solutions are immediately thrown out.
-func Solve(n uint) []Solution {
+func Solve(n uint) [][]int {
 	opts := make([]int, n, n)
 	for i := range opts {
 		opts[i] = i
 	}
 
-	return solve(make(Solution, 0, n), opts)
+	return solve(make([]int, 0, n), opts)
 }
 
 // solve recursively calculates each permutation and validates it before adding to the set of solutions
-func solve(root Solution, opts []int) (solutions []Solution) {
+func solve(root []int, opts []int) (solutions [][]int) {
 	// no more options to choose from
 	if len(opts) == 0 {
 		if len(root) == 0 {
@@ -65,7 +65,7 @@ func solve(root Solution, opts []int) (solutions []Solution) {
 		}
 
 		// copy the root solution
-		s := make(Solution, len(root)+1, cap(root))
+		s := make([]int, len(root)+1, cap(root))
 		copy(s, root)
 
 		s[len(root)] = opt
@@ -82,7 +82,7 @@ func solve(root Solution, opts []int) (solutions []Solution) {
 }
 
 // validate recursively checks if slope between the points (x, y) and (s[len(s)-1], len(s)-1) is +/-1. If the slope is +/-1, then false is returned. Otherwise, the length of s is shortened by 1 until len(s) is 0.
-func validate(x, y int, s Solution) bool {
+func validate(x, y int, s []int) bool {
 	if len(s) == 0 {
 		return true
 	}
