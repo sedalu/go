@@ -1,4 +1,4 @@
-// nqueens provides a data structure, Solution, and a function, Solve, for finding the set of valid solutions to the N Queens problem. Please refer to https://en.m.wikipedia.org/wiki/Eight_queens_puzzle.
+// Package nqueens provides a data structure, Solution, and a function, Solve, for finding the set of valid solutions to the N Queens problem. Please refer to https://en.m.wikipedia.org/wiki/Eight_queens_puzzle.
 package nqueens
 
 // Solution represents the position of the queens on a square board. Each index represents the row offset and the value represents the column offset.
@@ -59,7 +59,7 @@ func solve(root Solution, opts []int) (solutions []Solution) {
 
 		// copy the root solution
 		s := make(Solution, len(root)+1, cap(root))
-		copy(solution, root[:len(root)])
+		copy(s, root)
 
 		s[len(root)] = opt
 
