@@ -18,6 +18,7 @@ var tsprint = []struct {
 
 func TestSprint(t *testing.T) {
 	for _, tt := range tsprint {
+		// TODO: use 1.7 subtests
 		str := Sprint(tt.s)
 
 		if str != tt.str {
@@ -55,6 +56,12 @@ func TestSolve(t *testing.T) {
 	}
 }
 
+func BenchmarkSolve(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Solve(8)
+	}
+}
+
 var tvalidate = []struct {
 	x, y  int
 	s     []int
@@ -69,7 +76,7 @@ var tvalidate = []struct {
 	{2, 1, []int{0}, true},
 }
 
-func TestValidate(t *testing.T) {
+func Test_validate(t *testing.T) {
 	for _, tt := range tvalidate {
 		valid := validate(tt.x, tt.y, tt.s)
 
@@ -95,7 +102,7 @@ var tdiagonal = []struct {
 	{2, 0, 0, 1, false},
 }
 
-func TestIsDiagonal(t *testing.T) {
+func Test_isDiagonal(t *testing.T) {
 	for _, tt := range tdiagonal {
 		s := isDiagonal(tt.x1, tt.y1, tt.x2, tt.y2)
 
