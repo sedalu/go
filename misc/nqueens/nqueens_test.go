@@ -1,6 +1,7 @@
 package nqueens
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -16,7 +17,7 @@ var tSolutionString = []struct {
 
 func TestSolutionString(t *testing.T) {
 	for _, tt := range tSolutionString {
-		str := tt.s.String()
+		str := tt.s.Format()
 
 		if str != tt.str {
 			t.Errorf("Solution(%v).String() => %q, want %q", []int(tt.s), str, tt.str)
@@ -27,23 +28,27 @@ func TestSolutionString(t *testing.T) {
 var tSolve = []struct {
 	n   uint
 	len int
+	cmp bool // true => compare solition set; false => compare len()
+	s   []Solution
 }{
-	{0, 0},
-	{1, 1},
-	{2, 0},
-	{3, 0},
-	{4, 2},
-	{5, 10},
-	{6, 4},
-	{7, 40},
-	{8, 92},
+	{0, 0, true, nil},
+	{1, 1, true, []Solution{{0}}},
+	{2, 0, true, nil},
+	{3, 0, true, nil},
+	{4, 2, true, []Solution{{1, 3, 0, 2}, {2, 0, 3, 1}}},
+	{5, 10, false, nil},
+	{6, 4, true, []Solution{{1, 3, 5, 0, 2, 4}, {2, 5, 1, 4, 0, 3}, {3, 0, 4, 1, 5, 2}, {4, 2, 0, 5, 3, 1}}},
+	{7, 40, false, nil},
+	{8, 92, false, nil},
 }
 
 func TestSolve(t *testing.T) {
 	for _, tt := range tSolve {
 		s := Solve(tt.n)
 
-		if len(s) != tt.len {
+		if tt.cmp && !reflect.DeepEqual(s, tt.s) {
+			t.Errorf("Solve(%v) => %v, want %v", tt.n, s, tt.s)
+		} else if len(s) != tt.len {
 			t.Errorf("len(Solve(%v)) => %v, want %v", tt.n, len(s), tt.len)
 		}
 	}

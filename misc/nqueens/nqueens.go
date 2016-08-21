@@ -5,7 +5,7 @@ package nqueens
 type Solution []int
 
 // String returns a string formated as a grid with the location of each queen marked by "Q".
-func (s Solution) String() string {
+func (s Solution) Format() string {
 	if len(s) == 0 {
 		return "++\n++\n"
 	}
